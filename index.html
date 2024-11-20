@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Предсказания</title>
+    <style>
+        #parent {
+            text-align: center;
+        }
+        #parent > * {
+            margin-bottom: 10px;
+        }
+        #timer {
+            font-size: 18px;
+        }
+        #text {
+            font-size: 17px;
+            font-style: italic;
+        }
+        button {
+            padding: 5px 10px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        button:not(.active) {
+            display: none;
+        }
+        .good {
+            color: green;
+        }
+        .bad {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="parent">
+        <div id="timer">?</div>
+        <div id="text"></div>
+        <button id="start" class="active">Узнать свою судьбу</button>
+        <button id="stop">Получить предсказание</button>
+    </div>
+
+    <script>
+        const predictions = [
+            { text: 'У вас будет прекрасный день!', type: 'good' },
+            { text: 'Сегодня может случиться что-то неприятное...', type: 'bad' },
+            { text: 'Удача на вашей стороне!', type: 'good' },
+            { text: 'Будьте осторожны с финансами.', type: 'bad' },
+            { text: 'Сегодня вы встретите старого друга.', type: 'good' },
+            { text: 'Может быть день, полный испытаний.', type: 'bad' }
+        ];
+
+        let timer;
+        let maxNumber = predictions.length;
+        let currentNumber = 1;
+
+        document.getElementById('start').addEventListener('click', function() {
+            this.classList.remove('active');
+            document.getElementById('stop').classList.add('active');
+
+            timer = setInterval(() => {
+                currentNumber = Math.floor(Math.random() * maxNumber) + 1;
+                document.getElementById('timer').innerText = currentNumber;
+            }, 100);
+        });
+
+        document.getElementById('stop').addEventListener('click', function() {
+            clearInterval(timer);
+            this.classList.remove('active');
+
+            let prediction = predictions[currentNumber - 1];
+            let textDiv = document.getElementById('text');
+            textDiv.innerText = prediction.text;
+            textDiv.classList.add(prediction.type);
+
+            document.getElementById('start').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
